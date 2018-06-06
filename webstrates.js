@@ -9,6 +9,9 @@ const httpAuth = require('http-auth');
 const passport = require('passport');
 const sessions = require('client-sessions');
 
+var multer  = require('multer');  
+var upload  = multer({ storage: multer.memoryStorage() });
+
 global.WORKER_ID = (cluster.worker && cluster.worker.id) || 1;
 global.APP_PATH = __dirname;
 
@@ -34,6 +37,8 @@ const sessionManager = require(APP_PATH + '/helpers/SessionManager.js');
 const permissionManager = require(APP_PATH + '/helpers/PermissionManager.js');
 const assetManager = require(APP_PATH + '/helpers/AssetManager.js');
 const httpRequestController = require(APP_PATH + '/helpers/HttpRequestController.js');
+const vuforiaManager = require(APP_PATH + '/helpers/VuforiaManager.js');
+
 
 // Setting up multi-threading. If config.threads is 0, a thread for each core is created.
 var threadCount = 1;
@@ -122,6 +127,11 @@ app.get(/^\/([A-Z0-9._-]+)(\/([A-Z0-9_-]+))?$/i,
 app.use(function(req, res, next) {
 	sessionMiddleware(req, null, next);
 });
+
+app.get('/vuforia/', vuforiaManager.mainHandler);
+app.get('/vuforia/getTargets', vuforiaManager.getTargetNamesHandler);
+app.get('/vuforia/getTargetImage/:target_name', vuforiaManager.getTargetImageHandler);
+app.post('/vuforia/createTarget', upload.single('image'), vuforiaManager.createTargetHandler);
 
 app.get('/', httpRequestController.rootRequestHandler);
 app.get('/new', httpRequestController.newWebstrateRequestHandler);

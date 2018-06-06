@@ -65,7 +65,8 @@
     "webpack": "^2.5.1",
     "wrapper-webpack-plugin": "^1.0.0",
     "ws": "0.4.32",
-    "yauzl": "^2.9.1"
+    "yauzl": "^2.9.1",
+    "vuforiajs": "0.2.5"
   },
   "devDependencies": {
     "chai": "^4.1.2",
