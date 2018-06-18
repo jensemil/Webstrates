@@ -132,6 +132,9 @@ app.get('/vuforia/', vuforiaManager.mainHandler);
 app.get('/vuforia/getTargets', vuforiaManager.getTargetNamesHandler);
 app.get('/vuforia/getTargetImage/:target_name', vuforiaManager.getTargetImageHandler);
 app.post('/vuforia/createTarget', upload.single('image'), vuforiaManager.createTargetHandler);
+app.post('/vuforia/updateTarget', vuforiaManager.updateTargetHandler);
+app.post('/vuforia/deleteTarget', vuforiaManager.deleteTargetHandler);
+
 
 app.get('/', httpRequestController.rootRequestHandler);
 app.get('/new', httpRequestController.newWebstrateRequestHandler);

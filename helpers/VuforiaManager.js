@@ -99,7 +99,7 @@ module.exports.createTargetHandler = function(req,res) {
                 // name of the target, unique within a database
                 'name': req.body.name,
                 // width of the target in scene unit
-                'width': parseFloat(req.body.width),
+                'width': parseFloat(1),
                 // the base64 encoded binary recognition image data
                 'image': util.encodeFileBase64(APP_PATH + '/' + uploadsFolder + fileName),
                 // indicates whether or not the target is active for query
@@ -119,12 +119,48 @@ module.exports.createTargetHandler = function(req,res) {
                     console.log("file deleted");
 
                 } else { //Succes!!
-                    console.log(result);
+                    console.log("target id: " + result.target_id);
                 }
                 res.send(result);
             });
         }
 
+    });
+};
+
+/**
+ * Handles requests to update Vuforia image targets.
+ * @param {obj} req Express request object.
+ * @param {obj} res Express response object.
+ * @public
+ */
+module.exports.updateTargetHandler = function(req,res){
+    console.log('update!');
+    console.log(req.body);
+
+    var update = {
+        'application_metadata': util.encodeBase64(req.body.metadata)
+    };
+    
+    client.updateTarget(req.body.id, update, function (error, result) {
+        console.log(result);
+        res.send(result);
+    });
+};
+
+/**
+ * Handles requests to delete Vuforia image targets.
+ * @param {obj} req Express request object.
+ * @param {obj} res Express response object.
+ * @public
+ */
+module.exports.deleteTargetHandler = function(req,res){
+    console.log('delete!');
+    console.log(req.body);
+    
+    client.deleteTarget(req.body.id, function (error, result) {
+        console.log(result);
+        res.send(result);
     });
 };
 
